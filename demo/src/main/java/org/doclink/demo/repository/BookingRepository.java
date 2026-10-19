@@ -17,4 +17,6 @@ public interface BookingRepository extends JpaRepository<org.doclink.demo.model.
 
     List<Booking> findByStatusOrderByBookingDateAsc(BookingStatus status);
 
+    List<Booking> findByBookingDateBetweenOrderByBookingDateAsc(LocalDate start, LocalDate end);
+
 }

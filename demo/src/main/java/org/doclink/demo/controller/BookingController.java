@@ -1,5 +1,6 @@
 package org.doclink.demo.controller;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -78,5 +79,10 @@ public class BookingController {
     @GetMapping("/by-status")
     public ResponseEntity<?> findByStatus(@RequestParam BookingStatus status) {
         return new ResponseEntity<>(service.findByStatus(status), HttpStatus.OK);
+    }
+
+    @GetMapping("/between")
+    public ResponseEntity<?> findBetween(@RequestParam String start, @RequestParam String end) {
+        return new ResponseEntity<>(service.findBetween(LocalDate.parse(start), LocalDate.parse(end)), HttpStatus.OK);
     }
 }

@@ -61,4 +61,8 @@ public class BookingService {
     public List<Booking> findByStatus(BookingStatus status) {
         return repository.findByStatusOrderByBookingDateAsc(status);
     }
+
+    public List<Booking> findBetween(LocalDate start, LocalDate end) {
+        return repository.findByBookingDateBetweenOrderByBookingDateAsc(start, end);
+    }
 }
