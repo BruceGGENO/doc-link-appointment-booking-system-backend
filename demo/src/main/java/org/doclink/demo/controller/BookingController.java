@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.doclink.demo.model.Booking;
+import org.doclink.demo.model.BookingStatus;
 import org.doclink.demo.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -71,5 +73,10 @@ public class BookingController {
         } else {
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/by-status")
+    public ResponseEntity<?> findByStatus(@RequestParam BookingStatus status) {
+        return new ResponseEntity<>(service.findByStatus(status), HttpStatus.OK);
     }
 }

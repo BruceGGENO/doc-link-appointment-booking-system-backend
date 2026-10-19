@@ -57,4 +57,8 @@ public class BookingService {
         repository.deleteById(id);
         return "Booking deleted successfully";
     }
+
+    public List<Booking> findByStatus(BookingStatus status) {
+        return repository.findByStatusOrderByBookingDateAsc(status);
+    }
 }
