@@ -1,22 +1,27 @@
 package org.doclink.demo.controller;
 
-
-import org.doclink.demo.service.PractitionerService;
-
-
 import java.util.Optional;
 import java.util.UUID;
+
+import org.doclink.demo.model.Member;
+import org.doclink.demo.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.doclink.demo.model.Member;
-import org.doclink.demo.service.MemberService;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/members")
 public class MemberController {
-    
+
     @Autowired
     private MemberService service;
 
@@ -59,5 +64,10 @@ public class MemberController {
         } else {
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/by-last-name")
+    public ResponseEntity<?> findByLastName(@RequestParam String lastName) {
+        return new ResponseEntity<>(service.findByLastName(lastName), HttpStatus.OK);
     }
 }
