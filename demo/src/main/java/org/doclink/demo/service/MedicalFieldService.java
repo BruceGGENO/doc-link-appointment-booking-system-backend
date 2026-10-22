@@ -1,18 +1,16 @@
 package org.doclink.demo.service;
 
-
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
 import org.doclink.demo.model.MedicalField;
 import org.doclink.demo.repository.MedicalFieldRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class MedicalFieldService {
-    
 
     @Autowired
     private MedicalFieldRepository repository;
@@ -48,5 +46,9 @@ public class MedicalFieldService {
         }
         repository.deleteById(id);
         return "Medical field deleted successfully";
+    }
+
+    public List<MedicalField> findUnusedFields() {
+        return repository.findUnusedFields();
     }
 }
