@@ -6,7 +6,6 @@ import org.doclink.demo.model.MedicalField;
 import org.doclink.demo.repository.MedicalFieldRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -17,17 +16,12 @@ import org.doclink.demo.repository.PractitionerRepository;
 
 @Service
 public class PractitionerService {
+
     @Autowired
     private ConsultationRoomRepository consultationRoomRepository;
 
-    
-
     @Autowired
     private MedicalFieldRepository medicalFieldRepository;
-
-    
-
-    
 
     @Autowired
     private PractitionerRepository repository;
@@ -67,5 +61,9 @@ public class PractitionerService {
         }
         repository.deleteById(id);
         return "Practitioner deleted successfully";
+    }
+
+    public List<Practitioner> findByMedicalField(String name) {
+        return repository.findByMedicalField(name);
     }
 }
