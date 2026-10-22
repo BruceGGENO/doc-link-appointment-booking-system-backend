@@ -1,17 +1,17 @@
 package org.doclink.demo.service;
 
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
 import org.doclink.demo.model.ConsultationRoom;
 import org.doclink.demo.repository.ConsultationRoomRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ConsultationRoomService {
-    
+
     @Autowired
     private ConsultationRoomRepository repository;
 
@@ -47,5 +47,9 @@ public class ConsultationRoomService {
         }
         repository.deleteById(id);
         return "Consultation room deleted successfully";
+    }
+
+    public List<ConsultationRoom> findFreeRooms() {
+        return repository.findFreeRooms();
     }
 }
