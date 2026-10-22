@@ -1,18 +1,15 @@
 package org.doclink.demo.service;
 
-import org.doclink.demo.model.ConsultationRoom;
-import org.doclink.demo.repository.ConsultationRoomRepository;
-import org.doclink.demo.model.MedicalField;
-import org.doclink.demo.repository.MedicalFieldRepository;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import org.doclink.demo.model.Practitioner;
+import org.doclink.demo.repository.ConsultationRoomRepository;
+import org.doclink.demo.repository.MedicalFieldRepository;
+import org.doclink.demo.repository.PractitionerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.doclink.demo.model.Practitioner;
-import org.doclink.demo.repository.PractitionerRepository;
 
 @Service
 public class PractitionerService {
@@ -66,4 +63,6 @@ public class PractitionerService {
     public List<Practitioner> findByMedicalField(String name) {
         return repository.findByMedicalField(name);
     }
+
+    
 }

@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.doclink.demo.model.Member;
 import org.doclink.demo.service.MemberService;
+import org.doclink.demo.service.PractitionerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,5 +70,17 @@ public class MemberController {
     @GetMapping("/by-last-name")
     public ResponseEntity<?> findByLastName(@RequestParam String lastName) {
         return new ResponseEntity<>(service.findByLastName(lastName), HttpStatus.OK);
+    }
+
+    @Autowired
+    private PractitionerService practitionerService;
+
+    @GetMapping("/of-practitioner/{practitionerId}")
+    public ResponseEntity<?> findMembersOfPractitioner(@PathVariable UUID practitionerId) {
+        if (practitionerService.getPractitioner(practitionerId).isEmpty()) {
+            return new ResponseEntity<>("The practitioner with that id does not exist", HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(service.findMembersOfPractitioner(practitionerId), HttpStatus.OK);
+        }
     }
 }

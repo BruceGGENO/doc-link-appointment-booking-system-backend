@@ -1,25 +1,16 @@
 package org.doclink.demo.service;
 
-
-
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
 import org.doclink.demo.model.Member;
 import org.doclink.demo.repository.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class MemberService {
-    public List<Member> findMembersOfPractitioner(UUID practitionerId) {
-        return repository.findMembersOfPractitioner(practitionerId);
-    }
-
-    public List<Member> findByLastName(String lastName) {
-        return repository.findByLastNameIgnoreCaseOrderByFirstNameAsc(lastName);
-    }
 
     @Autowired
     private MemberRepository repository;
@@ -59,5 +50,13 @@ public class MemberService {
         }
         repository.deleteById(id);
         return "Member deleted successfully";
+    }
+
+    public List<Member> findByLastName(String lastName) {
+        return repository.findByLastNameIgnoreCaseOrderByFirstNameAsc(lastName);
+    }
+
+    public List<Member> findMembersOfPractitioner(UUID practitionerId) {
+        return repository.findMembersOfPractitioner(practitionerId);
     }
 }
