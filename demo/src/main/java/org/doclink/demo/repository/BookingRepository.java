@@ -13,9 +13,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BookingRepository extends JpaRepository<org.doclink.demo.model.Booking, UUID> {
 
-    boolean existsByPractitionerAndBookingDateAndStatusNot(Practitioner practitioner, LocalDate bookingDate, BookingStatus status);
-
     List<Booking> findByStatusOrderByBookingDateAsc(BookingStatus status);
+
+    boolean existsByPractitionerAndBookingDateAndStatusNot(Practitioner practitioner, LocalDate bookingDate, BookingStatus status);
 
     List<Booking> findByBookingDateBetweenOrderByBookingDateAsc(LocalDate start, LocalDate end);
 

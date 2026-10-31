@@ -21,6 +21,9 @@ public class BookingService {
         if (booking.getBookingDate().isBefore(LocalDate.now())) {
             return "Booking date cannot be in the past";
         }
+        if (repository.existsByPractitionerAndBookingDateAndStatusNot(booking.getPractitioner(), booking.getBookingDate(), BookingStatus.DECLINED)) {
+            return "Practitioner is already booked on that date";
+        }
         booking.setStatus(BookingStatus.REQUESTED);
         booking.setId(null);
         repository.save(booking);
