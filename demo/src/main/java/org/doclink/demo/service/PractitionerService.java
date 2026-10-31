@@ -4,12 +4,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.doclink.demo.model.MedicalField;
 import org.doclink.demo.model.Practitioner;
 import org.doclink.demo.repository.ConsultationRoomRepository;
 import org.doclink.demo.repository.MedicalFieldRepository;
 import org.doclink.demo.repository.PractitionerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class PractitionerService {
@@ -64,5 +67,23 @@ public class PractitionerService {
         return repository.findByMedicalField(name);
     }
 
-    
+    @Transactional
+    public String addMedicalField(UUID practitionerId, UUID medicalFieldId) {
+        Optional<Practitioner> existing = repository.findById(practitionerId);
+        if (existing.isEmpty()) {
+            return "The practitioner with that id does not exist";
+        }
+        Optional<MedicalField> field = medicalFieldRepository.findById(medicalFieldId);
+        if (field.isEmpty()) {
+            return "That medical field does not exist";
+        }
+        Practitioner practitioner = existing.get();
+        if (practitioner.getMedicalFields().contains(field.get())) {
+            return "The practitioner already has that medical field";
+        }
+        practitioner.getMedicalFields().add(field.get());
+        repository.save(practitioner);
+        return "Medical field added to the practitioner";
+    }
+
 }

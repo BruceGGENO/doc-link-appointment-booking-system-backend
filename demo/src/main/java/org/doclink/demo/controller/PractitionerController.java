@@ -70,4 +70,16 @@ public class PractitionerController {
     public ResponseEntity<?> findByMedicalField(@RequestParam String name) {
         return new ResponseEntity<>(service.findByMedicalField(name), HttpStatus.OK);
     }
+
+    @PutMapping("/{practitionerId}/medical-fields/{medicalFieldId}")
+    public ResponseEntity<?> addMedicalField(@PathVariable UUID practitionerId, @PathVariable UUID medicalFieldId) {
+        String message = service.addMedicalField(practitionerId, medicalFieldId);
+        if (message.equals("Medical field added to the practitioner")) {
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else if (message.equals("The practitioner already has that medical field")) {
+            return new ResponseEntity<>(message, HttpStatus.CONFLICT);
+        } else {
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        }
+    }
 }
