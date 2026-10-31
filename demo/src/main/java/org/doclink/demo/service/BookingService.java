@@ -68,4 +68,21 @@ public class BookingService {
     public List<Booking> findBetween(LocalDate start, LocalDate end) {
         return repository.findByBookingDateBetweenOrderByBookingDateAsc(start, end);
     }
+
+    public String changeStatus(UUID id, BookingStatus status) {
+        Optional<Booking> existing = repository.findById(id);
+        if (existing.isEmpty()) {
+            return "The booking with that id does not exist";
+        }
+        Booking booking = existing.get();
+        BookingStatus current = booking.getStatus();
+        if ((current == BookingStatus.REQUESTED && (status == BookingStatus.ACCEPTED || status == BookingStatus.DECLINED))
+                || (current == BookingStatus.ACCEPTED && (status == BookingStatus.ATTENDED || status == BookingStatus.DECLINED))) {
+            booking.setStatus(status);
+            repository.save(booking);
+            return "Booking status updated successfully";
+        } else {
+            return "Cannot change status from " + current + " to " + status;
+        }
+    }
 }
