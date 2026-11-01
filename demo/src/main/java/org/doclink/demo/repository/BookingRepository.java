@@ -25,6 +25,7 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
     @Query("SELECT b.status, COUNT(b) FROM Booking b GROUP BY b.status")
     List<Object[]> countBookingsByStatus();
 
+    @Modifying
     @Query("UPDATE Booking b SET b.status = :declined WHERE b.practitioner.id = :practitionerId AND b.bookingDate = :date AND b.status <> :attended")
     int cancelDay(@Param("practitionerId") UUID practitionerId, @Param("date") LocalDate date,
             @Param("declined") BookingStatus declined, @Param("attended") BookingStatus attended);
