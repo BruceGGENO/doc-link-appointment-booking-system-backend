@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.doclink.demo.model.ConsultationRoom;
 import org.doclink.demo.model.MedicalField;
 import org.doclink.demo.model.Practitioner;
 import org.doclink.demo.repository.ConsultationRoomRepository;
@@ -84,6 +85,27 @@ public class PractitionerService {
         practitioner.getMedicalFields().add(field.get());
         repository.save(practitioner);
         return "Medical field added to the practitioner";
+    }
+
+    @Transactional
+    public String changeConsultationRoom(UUID practitionerId, int roomNumber) {
+        Optional<Practitioner> existing = repository.findById(practitionerId);
+        if (existing.isEmpty()) {
+            return "The practitioner with that id does not exist";
+        }
+        Optional<ConsultationRoom> room = consultationRoomRepository.findByRoomNumber(roomNumber);
+        if (room.isEmpty()) {
+            return "The consultation room with that roomNumber does not exist";
+        }
+        Practitioner practitioner = existing.get();
+        boolean sameRoom = practitioner.getConsultationRoom() != null
+                && practitioner.getConsultationRoom().getId().equals(room.get().getId());
+        if (!sameRoom && repository.existsByConsultationRoom(room.get())) {
+            return "That consultation room is taken by another practitioner";
+        }
+        practitioner.setConsultationRoom(room.get());
+        repository.save(practitioner);
+        return "Consultation room changed successfully";
     }
 
 }

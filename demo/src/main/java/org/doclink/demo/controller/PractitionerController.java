@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -77,6 +78,18 @@ public class PractitionerController {
         if (message.equals("Medical field added to the practitioner")) {
             return new ResponseEntity<>(message, HttpStatus.OK);
         } else if (message.equals("The practitioner already has that medical field")) {
+            return new ResponseEntity<>(message, HttpStatus.CONFLICT);
+        } else {
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PatchMapping("/{practitionerId}/consultation-room")
+    public ResponseEntity<?> changeConsultationRoom(@PathVariable UUID practitionerId, @RequestParam int roomNumber) {
+        String message = service.changeConsultationRoom(practitionerId, roomNumber);
+        if (message.equals("Consultation room changed successfully")) {
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else if (message.equals("That consultation room is taken by another practitioner")) {
             return new ResponseEntity<>(message, HttpStatus.CONFLICT);
         } else {
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
