@@ -8,8 +8,11 @@ import java.util.UUID;
 import org.doclink.demo.model.Booking;
 import org.doclink.demo.model.BookingStatus;
 import org.doclink.demo.repository.BookingRepository;
+import org.doclink.demo.repository.ConsultationNoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class BookingService {
@@ -52,10 +55,16 @@ public class BookingService {
         return "Booking updated successfully";
     }
 
+    @Autowired
+    private ConsultationNoteRepository consultationNoteRepository;
+
     public String deleteBooking(UUID id) {
         Optional<Booking> booking = repository.findById(id);
         if (booking.isEmpty()) {
             return "The booking with that id does not exist";
+        }
+        if (consultationNoteRepository.existsByBooking(booking.get())) {
+            return "That booking has consultation notes, delete them first";
         }
         repository.deleteById(id);
         return "Booking deleted successfully";
@@ -84,5 +93,15 @@ public class BookingService {
         } else {
             return "Cannot change status from " + current + " to " + status;
         }
+    }
+
+    public List<Object[]> countBookingsByStatus() {
+        return repository.countBookingsByStatus();
+    }
+
+    @Transactional
+    public String cancelDay(UUID practitionerId, LocalDate date) {
+        int updated = repository.cancelDay(practitionerId, date, BookingStatus.DECLINED, BookingStatus.ATTENDED);
+        return updated + " bookings cancelled";
     }
 }

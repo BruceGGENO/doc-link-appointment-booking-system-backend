@@ -98,4 +98,14 @@ public class BookingController {
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/stats/by-status")
+    public ResponseEntity<?> countBookingsByStatus() {
+        return new ResponseEntity<>(service.countBookingsByStatus(), HttpStatus.OK);
+    }
+
+    @PatchMapping("/cancel-day")
+    public ResponseEntity<?> cancelDay(@RequestParam UUID practitionerId, @RequestParam String date) {
+        return new ResponseEntity<>(service.cancelDay(practitionerId, LocalDate.parse(date)), HttpStatus.OK);
+    }
 }
